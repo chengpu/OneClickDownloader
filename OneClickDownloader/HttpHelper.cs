@@ -8,32 +8,6 @@ namespace OneClickDownloader
 {
 	public class HttpHelper
 	{
-		public static string GetText(string url)
-		{
-			return GetText(url, "utf-8");
-		}
-
-		public static string GetText(string url, string encoding)
-		{
-			try
-			{
-				HttpWebRequest httpRequest = WebRequest.CreateHttp(url);
-				HttpWebResponse httpResponse = httpRequest.GetResponse() as HttpWebResponse;
-				using (Stream stream = httpResponse.GetResponseStream())
-				{
-					using (StreamReader reader = new StreamReader(stream, Encoding.GetEncoding(encoding)))
-					{
-						string text = reader.ReadToEnd();
-						return text;
-					}
-				}
-			}
-			catch
-			{
-				return null;
-			}
-		}
-
 		public static byte[] GetData(string url)
 		{
 			try

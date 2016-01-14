@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using System.Text;
 
 
 namespace OneClickDownloader
@@ -16,12 +17,14 @@ namespace OneClickDownloader
 		private string appUrl;
 		private string appPath;
 		private string appName;
+		private byte[] appData;
 		private string appXml;
 
 		//
 		private string manifestUrl;
 		private string manifestPath;
 		private string manifestName;
+		private byte[] manifestData;
 		private string manifestXml;
 
 		//
@@ -40,10 +43,15 @@ namespace OneClickDownloader
 		public void Do()
 		{
 			//
+			string utf8Bom = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
+
+			//
 			appUrl = url;
 			appPath = ".\\";
 			appName = url.Substring(url.LastIndexOf('/') + 1);
-			appXml = HttpHelper.GetText(appUrl);
+			appData = HttpHelper.GetData(appUrl);
+			appXml = new System.Text.UTF8Encoding(false).GetString(appData);
+			if (appXml.StartsWith(utf8Bom)) appXml = appXml.Remove(0, utf8Bom.Length);
 			Console.WriteLine(string.Format("load {0}", appUrl));
 
 			//
@@ -53,7 +61,9 @@ namespace OneClickDownloader
 			manifestUrl = appUrl.Substring(0, url.LastIndexOf('/') + 1) + manifestCodebase.Replace('\\', '/');
 			manifestPath = manifestCodebase.Substring(0, manifestCodebase.LastIndexOf('\\') + 1);
 			manifestName = manifestCodebase.Substring(manifestCodebase.LastIndexOf('\\') + 1);
-			manifestXml = HttpHelper.GetText(manifestUrl);
+			manifestData = HttpHelper.GetData(manifestUrl);
+			manifestXml = System.Text.Encoding.UTF8.GetString(appData);
+			if (manifestXml.StartsWith(utf8Bom)) manifestXml = manifestXml.Remove(0, utf8Bom.Length);
 			Console.WriteLine(string.Format("load {0}", manifestUrl));
 
 			//
@@ -84,10 +94,10 @@ namespace OneClickDownloader
 			Directory.CreateDirectory(task);
 
 			Directory.CreateDirectory(task + "\\" + appPath);
-			File.WriteAllText(task + "\\" + appPath + appName, appXml);
+			File.WriteAllBytes(task + "\\" + appPath + appName, appData);
 
 			Directory.CreateDirectory(task + "\\" + manifestPath);
-			File.WriteAllText(task + "\\" + manifestPath + manifestName, manifestXml);
+			File.WriteAllBytes(task + "\\" + manifestPath + manifestName, manifestData);
 
 			File.WriteAllText(task + ".xml", taskXml);
 
