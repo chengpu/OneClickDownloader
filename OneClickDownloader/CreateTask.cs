@@ -62,7 +62,7 @@ namespace OneClickDownloader
 			manifestPath = manifestCodebase.Substring(0, manifestCodebase.LastIndexOf('\\') + 1);
 			manifestName = manifestCodebase.Substring(manifestCodebase.LastIndexOf('\\') + 1);
 			manifestData = HttpHelper.GetData(manifestUrl);
-			manifestXml = System.Text.Encoding.UTF8.GetString(appData);
+			manifestXml = System.Text.Encoding.UTF8.GetString(manifestData);
 			if (manifestXml.StartsWith(utf8Bom)) manifestXml = manifestXml.Remove(0, utf8Bom.Length);
 			Console.WriteLine(string.Format("load {0}", manifestUrl));
 
