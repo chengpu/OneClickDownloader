@@ -7,9 +7,12 @@ namespace OneClickDownloader
 	{
 		static void Main(string[] args)
 		{
-			// TODO
-			new CreateTask("GitHub", "http://github-windows.s3.amazonaws.com/GitHub.application").Do();
+			/*
+			//
+			new CreateTask("GitHubSetup", "http://github-windows.s3.amazonaws.com/GitHub.application").Do();
+			new RunTask("GitHubSetup").Do();
 			return;
+			*/
 
 			//
 			string command = "";

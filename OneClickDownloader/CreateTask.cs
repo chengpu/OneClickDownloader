@@ -74,6 +74,8 @@ namespace OneClickDownloader
 					fileName = name.Substring(name.LastIndexOf('\\') + 1);
 				}
 				string fileUrl = manifestUrl.Substring(0, manifestUrl.LastIndexOf('/') + 1) + name.Replace('\\', '/');
+				fileName += ".deploy";
+				fileUrl += ".deploy";
 				taskXml += string.Format("<file FilePath=\"{0}\" FileName=\"{1}\" FileSize=\"{2}\" Url=\"{3}\"/>\r\n", filePath, fileName, size, fileUrl);
 			}
 			taskXml += "</files>\r\n";
@@ -85,7 +87,7 @@ namespace OneClickDownloader
 			File.WriteAllText(task + "\\" + appPath + appName, appXml);
 
 			Directory.CreateDirectory(task + "\\" + manifestPath);
-			File.WriteAllText(task + "\\" + manifestPath + manifestName, appXml);
+			File.WriteAllText(task + "\\" + manifestPath + manifestName, manifestXml);
 
 			File.WriteAllText(task + ".xml", taskXml);
 
