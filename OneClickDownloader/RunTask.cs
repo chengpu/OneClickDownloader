@@ -134,6 +134,30 @@ namespace OneClickDownloader
 			}
 
 			//
+			int missingCount = 0;
+			for (int i = 0; i < downloaders.Count; i++)
+			{
+				//
+				Downloader downloader = downloaders[i];
+
+				//
+				FileInfo fi = new FileInfo(task + "\\" + downloader.FilePath + downloader.FileName);
+				if (!fi.Exists || (fi.Length != downloader.FileSize))
+				{
+					missingCount++;
+					System.Console.WriteLine(string.Format("Missing: {0}", downloader.Url));
+				}
+			}
+
+			//
+			if (missingCount > 0)
+			{
+				Console.WriteLine(string.Format("RunTask [{0}] Complete!", task));
+				Console.WriteLine(string.Format("missing {0} file{1}, Please retry.", missingCount, (missingCount > 1 ? "s" : "")));
+				return;
+			}
+
+			//
 			Console.WriteLine(string.Format("RunTask [{0}] Complete!", task));
 		}
 
